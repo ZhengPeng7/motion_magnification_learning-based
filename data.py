@@ -12,6 +12,17 @@ from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 Tensor = torch.cuda.FloatTensor
 
+
+def gen_poisson_noise(unit):
+    n = np.random.randn(*unit.shape)
+
+    # Strange here, unit has been in range of (-1, 1),
+    # but currently same as the official codes.
+    n_str = np.sqrt(unit + 1.0) / np.sqrt(127.5)
+    poisson_noise = np.multiply(n, n_str)
+    return poisson_noise
+
+
 def load_unit(path, preproc):
     # Load
     file_suffix = path.split('.')[-1].lower()
@@ -34,6 +45,8 @@ def load_unit(path, preproc):
     unit = cv2.cvtColor(unit, cv2.COLOR_BGR2RGB)
     try:
         unit = unit.astype(np.float32) / 127.5 - 1.0
+        if 'poisson' in preproc:
+            unit = unit + gen_poisson_noise(unit) * np.random.uniform(0, 0.3)
     except Exception as e:
         print('EX:', e, unit.shape, unit.dtype)
 
@@ -50,7 +63,7 @@ def unit_postprocessing(unit, residual=None, vid_size=None):
         unit = torch.clamp(unit - residual, -1.0, 1.0)
     unit = unit.cpu().detach().numpy()
     unit = np.round((np.transpose(unit, (1, 2, 0)) + 1.0) * 127.5).astype(np.uint8)
-    if unit.shape[:2][::-1] != vid_size:
+    if unit.shape[:2][::-1] != vid_size and vid_size is not None:
         unit = cv2.resize(unit, vid_size, interpolation=cv2.INTER_CUBIC)
     return unit
 
@@ -147,8 +160,8 @@ class DataGen():
             anchor = self.anchor
 
         for _ in range(self.batch_size):
-            unit_A = load_unit(self.paths[anchor], preproc=self.preproc)
-            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'), preproc=self.preproc)
+            unit_A = load_unit(self.paths[anchor], preproc=['resize'])
+            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'), preproc=['resize'])
             batch_A.append(unit_A)
             batch_C.append(unit_C)
 

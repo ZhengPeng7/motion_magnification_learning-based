@@ -9,7 +9,7 @@ class Config(object):
         self.GPUs = '0'
         self.batch_size = 4 * len(self.GPUs.split(','))
         self.use_energy = False
-        self.date = '2019-11-24'
+        self.date = '2019-11-26'
         prefix = '..'
         self.dir_train = os.path.join(prefix, 'datasets/motion_mag_data/train')
         self.dir_test = os.path.join(prefix, 'datasets/motion_mag_data/test')
@@ -40,7 +40,7 @@ class Config(object):
         self.skip = 0 if not isinstance(skip, int) else skip
         self.batch_size_test = 1
         self.video_num = len(self.videos_train)
-        self.preproc = ['resize']
+        self.preproc = ['resize', 'poisson']
 
         self.lr = 1e-4
         self.betas_G = (0.9, 0.999)
