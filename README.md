@@ -25,7 +25,7 @@ Please refer to [the official Tensorflow==1.3.0 version implementation](https://
 
 # One thing **important**
 
-If you check the Fig.2-a in the original paper, you will find that the predicted magnified frame <img src="https://latex.codecogs.com/svg.latex?\hat{Y}" title="\y_hat" /> is actually <img src="https://latex.codecogs.com/svg.latex?texture(X_b) + motion(X_a->X_b) * \alpha " title=" texture(X_b) + motion(X_a->X_b) * \alpha " />, although the former one is theoretically same as <img src="https://latex.codecogs.com/svg.latex?texture(X_a) + motion(X_a->X_b) * (\alpha + 1)" title="\lambda" />   with the same  <img src="https://latex.codecogs.com/svg.latex?\alpha" title="\alpha" /> .
+If you check the Fig.2-a in the original paper, you will find that the predicted magnified frame <img src="https://latex.codecogs.com/svg.latex?\hat{Y}" title="\y_hat" /> is actually <img src="https://latex.codecogs.com/svg.latex?texture(X_b)+motion(X_a->X_b)*\alpha" title="texture(X_b)+motion(X_a->X_b)*\alpha" />, although the former one is theoretically same as <img src="https://latex.codecogs.com/svg.latex?texture(X_a)+motion(X_a->X_b)*(\alpha+1)" />   with the same  <img src="https://latex.codecogs.com/svg.latex?\alpha" title="\alpha" /> .
 
 <img src="materials/Fig2-a.png" alt="Fig2-a" style="zoom:60%;" div align=center />
 
@@ -40,7 +40,7 @@ Here is the first training sample, where you can see clear that **no perturbatio
 
 <img src="materials/dogs.png" alt="dog" style="zoom: 67%;" div align=center />
 
-Given that, we don't have the unperturbed amplified frame, so **we can only use the former formula**(with  <img src="https://latex.codecogs.com/svg.latex?texture(X_b)" /> ). Besides, if you check the **loss** in the original paper, you will find the   <img src="https://latex.codecogs.com/svg.latex?L_1(V_{b}^{'}, V_{Y}^{'})" />, where is the  <img src="https://latex.codecogs.com/svg.latex?V_{Y}^{'}" />?... I also referred to some third-party reproductions on this problem which confused me a lot, but none of them solve it. And some just gave 0 to   <img src="https://latex.codecogs.com/svg.latex?L_1(V_{b}^{'}, V_{Y}^{'})" />  manually, so I think they noticed this problem too but didn't manage to understand it.
+Given that, we don't have the unperturbed amplified frame, so **we can only use the former formula**(with  <img src="https://latex.codecogs.com/svg.latex?texture(X_b)" /> ). Besides, if you check the **loss** in the original paper, you will find the   <img src="https://latex.codecogs.com/svg.latex?L_1(V_{b}^{'},V_{Y}^{'})" />, where is the  <img src="https://latex.codecogs.com/svg.latex?V_{Y}^{'}" />?... I also referred to some third-party reproductions on this problem which confused me a lot, but none of them solve it. And some just gave 0 to   <img src="https://latex.codecogs.com/svg.latex?L_1(V_{b}^{'},V_{Y}^{'})" />  manually, so I think they noticed this problem too but didn't manage to understand it.
 
 Here are some links to the issues about this problem in the official repository, [issue-1](https://github.com/12dmodel/deep_motion_mag/issues/3), [issue-2](https://github.com/12dmodel/deep_motion_mag/issues/5), [issue-3](https://github.com/12dmodel/deep_motion_mag/issues/4), if you want to check them.
 
@@ -51,7 +51,7 @@ It took me around 20 hours to train for 12 epochs on a single TITAN-Xp.
 
 If you don't want to use all the 100,000 groups to train, you can modify the `frames_train='coco100000'` in config.py to coco30000 or some other number.
 
-You can download the weights-ep12 from [the release](https://github.com/ZhengPeng7/motion_magnification_learning-based/releases/tag/v1.0), and `python test_videos.py baby-guitar-yourself-...` to do the test.
+You can **download the weights**-ep12 from [the release](https://github.com/ZhengPeng7/motion_magnification_learning-based/releases/tag/v1.0), and `python test_videos.py baby-guitar-yourself-...` to do the test.
 
 # Results
 
