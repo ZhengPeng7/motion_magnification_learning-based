@@ -4,9 +4,10 @@ import torch
 import torch.autograd as ag
 
 
-def criterion_mag_G(mag_A, batch_M, texture_AC, motion_BC, criterion):
-    loss_M = criterion(mag_A, batch_M)
-    loss_texture = criterion(*texture_AC) * 0.1
-    loss_motion = criterion(*motion_BC) * 0.1
-    # print("loss_M/app/mot: {:.2e}, {:.2e}, {:.2e}".format(loss_M, loss_texture, loss_motion))
-    return loss_M + loss_texture + loss_motion
+def criterion_mag(y, batch_M, texture_AC, texture_BM, motion_BC, criterion):
+    # One thing deserves mentioning is that the amplified frames given in the dataset are actually perturbed Y(Y'), which I used M to represent.
+    loss_y = criterion(y, batch_M)
+    loss_texture_AC = criterion(*texture_AC)
+    loss_texture_BM = criterion(*texture_BM)
+    loss_motion_BC = criterion(*motion_BC)
+    return loss_y, loss_texture_AC, loss_texture_BM, loss_motion_BC

@@ -17,7 +17,7 @@ def gen_poisson_noise(unit):
     n = np.random.randn(*unit.shape)
 
     # Strange here, unit has been in range of (-1, 1),
-    # but currently same as the official codes.
+    # but made example to checked to be same as the official codes.
     n_str = np.sqrt(unit + 1.0) / np.sqrt(127.5)
     poisson_noise = np.multiply(n, n_str)
     return poisson_noise
@@ -42,6 +42,7 @@ def load_unit(path, preproc):
         unit = cv2.resize(unit, (384, 384), interpolation=cv2.INTER_LANCZOS4)
     elif 'downsample' in preproc:
         unit = cv2.resize(unit, unit.shape[1]//2, unit.shape[0]//2, interpolation=cv2.INTER_LANCZOS4)
+
     unit = cv2.cvtColor(unit, cv2.COLOR_BGR2RGB)
     try:
         unit = unit.astype(np.float32) / 127.5 - 1.0
@@ -54,14 +55,10 @@ def load_unit(path, preproc):
     return unit
 
 
-def unit_postprocessing(unit, residual=None, vid_size=None):
+def unit_postprocessing(unit, vid_size=None):
     unit = unit.squeeze()
-    if residual is not None:
-        if residual.shape[-2:] != unit.shape[-2:]:
-            residual = resize2d(residual, unit.shape[-2:])
-        residual = residual.squeeze()
-        unit = torch.clamp(unit - residual, -1.0, 1.0)
     unit = unit.cpu().detach().numpy()
+    unit = np.clip(unit, -1, 1)
     unit = np.round((np.transpose(unit, (1, 2, 0)) + 1.0) * 127.5).astype(np.uint8)
     if unit.shape[:2][::-1] != vid_size and vid_size is not None:
         unit = cv2.resize(unit, vid_size, interpolation=cv2.INTER_CUBIC)
@@ -90,7 +87,7 @@ def get_paths_ABC(config, mode):
     if 'test' not in mode:
         path_vids = os.path.join(config.dir_train, 'train_vid_frames')
         dirs_vid = [os.path.join(path_vids, p, 'frameA') for p in config.videos_train]
-        for dir_vid in dirs_vid[:config.video_num]:
+        for dir_vid in dirs_vid[:len(config.videos_train)]:
             vid_frames = [
                 os.path.join(dir_vid, p) for p in sorted(
                     os.listdir(dir_vid), key=lambda x: int(x.split('.')[0])
@@ -126,7 +123,6 @@ class DataGen():
         batch_M = []
         batch_B = []
         batch_amp = []
-        batch_ori = []
         if anchor is None:
             anchor = self.anchor
 
@@ -148,9 +144,7 @@ class DataGen():
         batch_C = numpy2cuda(batch_C)
         batch_M = numpy2cuda(batch_M)
         batch_B = numpy2cuda(batch_B)
-        batch_amp = numpy2cuda(batch_amp)
-        for _ in range(4 - len(batch_amp.shape)):
-            batch_amp = batch_amp.unsqueeze(-1)
+        batch_amp = numpy2cuda(batch_amp).reshape(self.batch_size, 1, 1, 1)
         return batch_A, batch_B, batch_C, batch_M, batch_amp
 
     def gen_test(self, anchor=None):
@@ -160,8 +154,8 @@ class DataGen():
             anchor = self.anchor
 
         for _ in range(self.batch_size):
-            unit_A = load_unit(self.paths[anchor], preproc=['resize'])
-            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'), preproc=['resize'])
+            unit_A = load_unit(self.paths[anchor], preproc=[])
+            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'), preproc=[])
             batch_A.append(unit_A)
             batch_C.append(unit_C)
 
