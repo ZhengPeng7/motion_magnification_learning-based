@@ -17,6 +17,8 @@ This is an unofficial implementation of "[Learning-based Video Motion Magnificat
 
     `mkdir VIDEO_NAME && ffmpeg -i VIDEO_NAME.mp4 -f image2 VIDEO_NAME/%06d.png`
 
+> Tips: ffmpeg can also be installed by conda.
+
 3. Modify the frames into **frameA/frameB/frameC**:
 
     `python make_frameACB.py `(remember adapt the filter condition of the directory at the beginning of the program.)
