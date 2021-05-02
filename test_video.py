@@ -41,7 +41,7 @@ for testset in testsets:
     vid_size = cv2.imread(data_loader.paths[0]).shape[:2][::-1]
 
     # Test
-    for amp in [0, 1, 4, 16, 64]:
+    for amp in [5, 10, 30, 50]:
         frames = []
         data_loader = get_gen_ABC(config, mode='test_on_'+testset)
         for idx_load in range(0, data_loader.data_len, data_loader.batch_size):
@@ -64,7 +64,7 @@ for testset in testsets:
         frames = [unit_postprocessing(data_loader.gen_test()[0], vid_size=vid_size)] + frames
 
         # Make videos of framesMag
-        video_dir = os.path.join('ep{}'.format(ep), dir_results, testset)
+        video_dir = os.path.join(dir_results, testset)
         if not os.path.exists(video_dir):
             os.makedirs(video_dir)
         FPS = 30

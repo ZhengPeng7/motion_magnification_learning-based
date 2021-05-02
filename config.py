@@ -7,13 +7,13 @@ class Config(object):
     def __init__(self):
 
         # General
-        self.epochs = 12
+        self.epochs = 15
         # self.GPUs = '0'
-        self.batch_size = 8     # * torch.cuda.device_count()     # len(self.GPUs.split(','))
-        self.date = '0607'
+        self.batch_size = 7     # * torch.cuda.device_count()     # len(self.GPUs.split(','))
+        self.date = '0502'
 
         # Data
-        self.data_dir = '../../datasets/motion_mag_data'
+        self.data_dir = '../../../datasets/mm'
         self.dir_train = os.path.join(self.data_dir, 'train')
         self.dir_test = os.path.join(self.data_dir, 'test')
         self.dir_water = os.path.join(self.data_dir, 'train/train_vid_frames/val_water')

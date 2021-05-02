@@ -1,6 +1,11 @@
-# motion_magnification_learning-based
-This is an unofficial implementation of "[Learning-based Video Motion Magnification](https://arxiv.org/abs/1804.02684)" in Pytorch==1.3.0.
-Please refer to [the official Tensorflow==1.3.0 version implementation](https://github.com/12dmodel/deep_motion_mag), which is a very nice work and helped me a lot.
+# Motion_magnification_learning-based
+This is an unofficial implementation of "[Learning-based Video Motion Magnification](https://arxiv.org/abs/1804.02684)" in Pytorch==1.8.1.
+[The official implementation in Tensorflow==1.8.0](https://github.com/12dmodel/deep_motion_mag).
+
+# Env
+`conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch`
+
+`pip install -r requirements.txt`
 
 # Data preparation
 
