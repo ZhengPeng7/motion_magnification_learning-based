@@ -53,7 +53,7 @@ def unit_preprocessing(unit, preproc=[], is_test=False):
 
             # unit = unit + gen_poisson_noise(unit) * np.random.uniform(0, 0.3)
 
-            unit = skimage.util.random_noise(unit, mode='poisson')      # 0 ~ 1
+            unit = skimage.util.random_noise(unit, mode='poisson')      # unit: 0 ~ 1
             unit = unit * 255
     except Exception as e:
         print('EX:', e, unit.shape, unit.dtype)
