@@ -1,5 +1,7 @@
 # Custom
 .vscode
+weights*
+results*
 
 
 # Byte-compiled / optimized / DLL files

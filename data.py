@@ -1,7 +1,7 @@
 import os
 from sklearn.utils import shuffle
 import cv2
-from skimage import io
+import skimage
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -23,20 +23,23 @@ def gen_poisson_noise(unit):
     return poisson_noise
 
 
-def load_unit(path, preproc):
+def load_unit(path):
     # Load
     file_suffix = path.split('.')[-1].lower()
     if file_suffix in ['jpg', 'png']:
         try:
-            unit = cv2.cvtColor(io.imread(path).astype(np.uint8), cv2.COLOR_RGB2BGR)
+            unit = cv2.cvtColor(skimage.io.imread(path).astype(np.uint8), cv2.COLOR_RGB2BGR)
         except Exception as e:
             print('{} load exception:\n'.format(path), e)
             unit = cv2.cvtColor(np.array(Image.open(path).convert('RGB')), cv2.COLOR_RGB2BGR)
+        return unit
     else:
         print('Unsupported file type.')
         return None
+
+def unit_preprocessing(unit, preproc=[], is_test=False):
     # Preprocessing
-    if 'BF' in preproc and 'train_vid_frames' in path:
+    if 'BF' in preproc and is_test:
         unit = cv2.bilateralFilter(unit, 9, 75, 75)
     if 'resize' in preproc:
         unit = cv2.resize(unit, (384, 384), interpolation=cv2.INTER_LANCZOS4)
@@ -45,11 +48,17 @@ def load_unit(path, preproc):
 
     unit = cv2.cvtColor(unit, cv2.COLOR_BGR2RGB)
     try:
-        unit = unit.astype(np.float32) / 127.5 - 1.0
         if 'poisson' in preproc:
-            unit = unit + gen_poisson_noise(unit) * np.random.uniform(0, 0.3)
+            # Use poisson noise from official repo or skimage?
+
+            # unit = unit + gen_poisson_noise(unit) * np.random.uniform(0, 0.3)
+
+            unit = skimage.util.random_noise(unit, mode='poisson')      # 0 ~ 1
+            unit = unit * 255
     except Exception as e:
         print('EX:', e, unit.shape, unit.dtype)
+
+    unit = unit / 127.5 - 1.0
 
     unit = np.transpose(unit, (2, 0, 1))
     return unit
@@ -107,15 +116,29 @@ def get_paths_ABC(config, mode):
 
 class DataGen():
     def __init__(self, paths, config, mode):
-        self.is_test = 'test' in mode
+        self.is_train = 'test' not in mode
         self.anchor = 0
         self.paths = paths
-        self.batch_size = config.batch_size_test if self.is_test else config.batch_size
+        self.batch_size = config.batch_size if self.is_train else config.batch_size_test
         self.data_len = len(paths)
-        self.load_all = False
+        self.load_all = config.load_all
         self.data = []
         self.preproc = config.preproc
         self.coco_amp_lst = config.coco_amp_lst
+
+        if self.is_train and self.load_all:
+            self.units_A, self.units_C, self.units_M, self.units_B = [], [], [], []
+            for idx_data in range(self.data_len):
+                if idx_data % 500 == 0:
+                    print('Processing {} / {}.'.format(idx_data, self.data_len))
+                unit_A = load_unit(self.paths[idx_data])
+                unit_C = load_unit(self.paths[idx_data].replace('frameA', 'frameC'))
+                unit_M = load_unit(self.paths[idx_data].replace('frameA', 'amplified'))
+                unit_B = load_unit(self.paths[idx_data].replace('frameA', 'frameB'))
+                self.units_A.append(unit_A)
+                self.units_C.append(unit_C)
+                self.units_M.append(unit_M)
+                self.units_B.append(unit_B)
 
     def gen(self, anchor=None):
         batch_A = []
@@ -127,11 +150,23 @@ class DataGen():
             anchor = self.anchor
 
         for _ in range(self.batch_size):
-            unit_A = load_unit(self.paths[anchor], preproc=self.preproc)
-            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'), preproc=self.preproc)
-            unit_M = load_unit(self.paths[anchor].replace('frameA', 'amplified'), preproc=self.preproc)
-            unit_B = load_unit(self.paths[anchor].replace('frameA', 'frameB'), preproc=self.preproc)
+            if not self.load_all:
+                unit_A = load_unit(self.paths[anchor])
+                unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'))
+                unit_M = load_unit(self.paths[anchor].replace('frameA', 'amplified'))
+                unit_B = load_unit(self.paths[anchor].replace('frameA', 'frameB'))
+            else:
+                unit_A = self.units_A[anchor]
+                unit_C = self.units_C[anchor]
+                unit_M = self.units_M[anchor]
+                unit_B = self.units_B[anchor]
+
+            unit_A = unit_preprocessing(unit_A, preproc=self.preproc)
+            unit_C = unit_preprocessing(unit_C, preproc=self.preproc)
+            unit_M = unit_preprocessing(unit_M, preproc=[])
+            unit_B = unit_preprocessing(unit_B, preproc=self.preproc)
             unit_amp = self.coco_amp_lst[anchor]
+
             batch_A.append(unit_A)
             batch_C.append(unit_C)
             batch_M.append(unit_M)
@@ -154,8 +189,10 @@ class DataGen():
             anchor = self.anchor
 
         for _ in range(self.batch_size):
-            unit_A = load_unit(self.paths[anchor], preproc=[])
-            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'), preproc=[])
+            unit_A = load_unit(self.paths[anchor])
+            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'))
+            unit_A = unit_preprocessing(unit_A, preproc=[], is_test=True)
+            unit_C = unit_preprocessing(unit_C, preproc=[], is_test=True)
             batch_A.append(unit_A)
             batch_C.append(unit_C)
 
