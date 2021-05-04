@@ -1,7 +1,8 @@
 import os
 from sklearn.utils import shuffle
 import cv2
-import skimage
+from skimage.io import imread
+from skimage.util import random_noise
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -28,7 +29,7 @@ def load_unit(path):
     file_suffix = path.split('.')[-1].lower()
     if file_suffix in ['jpg', 'png']:
         try:
-            unit = cv2.cvtColor(skimage.io.imread(path).astype(np.uint8), cv2.COLOR_RGB2BGR)
+            unit = cv2.cvtColor(imread(path).astype(np.uint8), cv2.COLOR_RGB2BGR)
         except Exception as e:
             print('{} load exception:\n'.format(path), e)
             unit = cv2.cvtColor(np.array(Image.open(path).convert('RGB')), cv2.COLOR_RGB2BGR)
@@ -53,14 +54,14 @@ def unit_preprocessing(unit, preproc=[], is_test=False):
 
             # unit = unit + gen_poisson_noise(unit) * np.random.uniform(0, 0.3)
 
-            unit = skimage.util.random_noise(unit, mode='poisson')      # unit: 0 ~ 1
+            unit = random_noise(unit, mode='poisson')      # unit: 0 ~ 1
             unit = unit * 255
     except Exception as e:
         print('EX:', e, unit.shape, unit.dtype)
 
     unit = unit / 127.5 - 1.0
 
-    unit = np.transpose(unit, (2, 0, 1))
+    unit = np.transpose(unit, (2, 0, 1)).astype(np.float16)
     return unit
 
 
@@ -135,6 +136,10 @@ class DataGen():
                 unit_C = load_unit(self.paths[idx_data].replace('frameA', 'frameC'))
                 unit_M = load_unit(self.paths[idx_data].replace('frameA', 'amplified'))
                 unit_B = load_unit(self.paths[idx_data].replace('frameA', 'frameB'))
+                unit_A = unit_preprocessing(unit_A, preproc=self.preproc)
+                unit_C = unit_preprocessing(unit_C, preproc=self.preproc)
+                unit_M = unit_preprocessing(unit_M, preproc=[])
+                unit_B = unit_preprocessing(unit_B, preproc=self.preproc)
                 self.units_A.append(unit_A)
                 self.units_C.append(unit_C)
                 self.units_M.append(unit_M)
@@ -161,10 +166,10 @@ class DataGen():
                 unit_M = self.units_M[anchor]
                 unit_B = self.units_B[anchor]
 
-            unit_A = unit_preprocessing(unit_A, preproc=self.preproc)
-            unit_C = unit_preprocessing(unit_C, preproc=self.preproc)
-            unit_M = unit_preprocessing(unit_M, preproc=[])
-            unit_B = unit_preprocessing(unit_B, preproc=self.preproc)
+            # unit_A = unit_preprocessing(unit_A, preproc=self.preproc)
+            # unit_C = unit_preprocessing(unit_C, preproc=self.preproc)
+            # unit_M = unit_preprocessing(unit_M, preproc=[])
+            # unit_B = unit_preprocessing(unit_B, preproc=self.preproc)
             unit_amp = self.coco_amp_lst[anchor]
 
             batch_A.append(unit_A)

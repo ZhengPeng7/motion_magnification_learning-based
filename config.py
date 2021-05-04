@@ -7,10 +7,10 @@ class Config(object):
     def __init__(self):
 
         # General
-        self.epochs = 10
+        self.epochs = 12
         # self.GPUs = '0'
-        self.batch_size = 7     # * torch.cuda.device_count()     # len(self.GPUs.split(','))
-        self.date = '0503'
+        self.batch_size = 6     # * torch.cuda.device_count()     # len(self.GPUs.split(','))
+        self.date = '0504'
 
         # Data
         self.data_dir = '../../../datasets/mm'
@@ -23,7 +23,7 @@ class Config(object):
         self.dir_guitar = os.path.join(self.data_dir, 'train/train_vid_frames/val_guitar')
         self.dir_cattoy = os.path.join(self.data_dir, 'train/train_vid_frames/val_cattoy')
         self.dir_myself = os.path.join(self.data_dir, 'train/train_vid_frames/myself')
-        self.frames_train = 'coco30000'        # you can adapt 100000 to a smaller number to train
+        self.frames_train = 'coco100000'        # you can adapt 100000 to a smaller number to train
         self.cursor_end = int(self.frames_train.split('coco')[-1])
         self.coco_amp_lst = np.loadtxt(os.path.join(self.dir_train, 'train_mf.txt'))[:self.cursor_end]
         self.videos_train = []

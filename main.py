@@ -21,7 +21,7 @@ cudnn.benchmark = True
 magnet = MagNet().cuda()
 if config.pretrained_weights:
     magnet.load_state_dict(gen_state_dict(config.pretrained_weights))
-if torch.cuda.device_count() > 1:
+if torch.cuda.device_count() > 1 and False:
     magnet = nn.DataParallel(magnet)
 criterion = nn.L1Loss().cuda()
 
