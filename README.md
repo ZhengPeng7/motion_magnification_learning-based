@@ -3,7 +3,7 @@ This is an unofficial implementation of "[Learning-based Video Motion Magnificat
 [The official implementation in Tensorflow==1.8.0](https://github.com/12dmodel/deep_motion_mag).
 
 # Env
-`conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch`
+`conda install pytorch torchvision cudatoolkit=10.2 -c pytorch`
 
 `pip install -r requirements.txt`
 
