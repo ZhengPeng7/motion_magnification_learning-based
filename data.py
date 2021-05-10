@@ -61,7 +61,7 @@ def unit_preprocessing(unit, preproc=[], is_test=False):
 
     unit = unit / 127.5 - 1.0
 
-    unit = np.transpose(unit, (2, 0, 1)).astype(np.float16)
+    unit = np.transpose(unit, (2, 0, 1))
     return unit
 
 
@@ -160,16 +160,15 @@ class DataGen():
                 unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'))
                 unit_M = load_unit(self.paths[anchor].replace('frameA', 'amplified'))
                 unit_B = load_unit(self.paths[anchor].replace('frameA', 'frameB'))
+                unit_A = unit_preprocessing(unit_A, preproc=self.preproc)
+                unit_C = unit_preprocessing(unit_C, preproc=self.preproc)
+                unit_M = unit_preprocessing(unit_M, preproc=[])
+                unit_B = unit_preprocessing(unit_B, preproc=self.preproc)
             else:
                 unit_A = self.units_A[anchor]
                 unit_C = self.units_C[anchor]
                 unit_M = self.units_M[anchor]
                 unit_B = self.units_B[anchor]
-
-            # unit_A = unit_preprocessing(unit_A, preproc=self.preproc)
-            # unit_C = unit_preprocessing(unit_C, preproc=self.preproc)
-            # unit_M = unit_preprocessing(unit_M, preproc=[])
-            # unit_B = unit_preprocessing(unit_B, preproc=self.preproc)
             unit_amp = self.coco_amp_lst[anchor]
 
             batch_A.append(unit_A)

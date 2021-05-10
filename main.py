@@ -21,7 +21,7 @@ cudnn.benchmark = True
 magnet = MagNet().cuda()
 if config.pretrained_weights:
     magnet.load_state_dict(gen_state_dict(config.pretrained_weights))
-if torch.cuda.device_count() > 1 and False:
+if torch.cuda.device_count() > 1:
     magnet = nn.DataParallel(magnet)
 criterion = nn.L1Loss().cuda()
 
@@ -37,7 +37,7 @@ print('Number of training image couples:', data_loader.data_len)
 
 # Training
 for epoch in range(1, config.epochs+1):
-    print('epoch:', epoch, end='')
+    print('epoch:', epoch)
     losses, losses_y, losses_texture_AC, losses_texture_BM, losses_motion_BC = [], [], [], [], []
     for idx_load in range(0, data_loader.data_len, data_loader.batch_size):
 

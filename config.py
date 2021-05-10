@@ -10,7 +10,7 @@ class Config(object):
         self.epochs = 12
         # self.GPUs = '0'
         self.batch_size = 6     # * torch.cuda.device_count()     # len(self.GPUs.split(','))
-        self.date = '0504'
+        self.date = '0510'
 
         # Data
         self.data_dir = '../../../datasets/mm'
@@ -27,7 +27,8 @@ class Config(object):
         self.cursor_end = int(self.frames_train.split('coco')[-1])
         self.coco_amp_lst = np.loadtxt(os.path.join(self.dir_train, 'train_mf.txt'))[:self.cursor_end]
         self.videos_train = []
-        self.load_all = True        # load all data into memory, in coco100000 10000 sets -> 17G
+        self.load_all = False        # Don't turn it on, unless you have such a big mem.
+                                     # On coco dataset, 100, 000 sets -> 850G
 
         # Training
         self.lr = 1e-4

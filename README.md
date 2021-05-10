@@ -9,19 +9,21 @@ This is an unofficial implementation of "[Learning-based Video Motion Magnificat
 
 # Data preparation
 
-0. About the synthetic dataset for **training**, please refer to the official repository mentioned above.
+0. About the synthetic dataset for **training**, please refer to the official repository mentioned above or download [here](https://drive.google.com/drive/folders/19K09QLouiV5N84wZiTPUMdoH9-UYqZrX?usp=sharing).
 
-1. Check the settings of val_dir in **config.py** and modify it if necessary.
+1. About the video datasets for **validation**, you can also download the preprocessed frames [here](https://drive.google.com/drive/folders/19K09QLouiV5N84wZiTPUMdoH9-UYqZrX?usp=sharing), which is named train_vid_frames.zip.
 
-2. To convert the **validation** video into frames:
+2. Check the settings of val_dir in **config.py** and modify it if necessary.
+
+3. To convert the **validation** video into frames:
 
     `mkdir VIDEO_NAME && ffmpeg -i VIDEO_NAME.mp4 -f image2 VIDEO_NAME/%06d.png`
 
 > Tips: ffmpeg can also be installed by conda.
 
-3. Modify the frames into **frameA/frameB/frameC**:
+4. Modify the frames into **frameA/frameB/frameC**:
 
-    `python make_frameACB.py `(remember adapt the filter condition of the directory at the beginning of the program.)
+    `python make_frameACB.py `(remember adapt the 'if' at the beginning of the program to select videos.)
 
 # Little differences from the official codes
 
