@@ -10,6 +10,9 @@ This is an unofficial implementation of "[Learning-based Video Motion Magnificat
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1inOucehJXUAVBlRhZvo650SoOPLKQFNv#scrollTo=BjgKRohk7Q5M)
 
+<p align="center">
+<img width="768" alt="VMM_colab_demo" src="https://user-images.githubusercontent.com/25921713/230589573-68d65731-ff7a-4b34-9aa3-e29b4dc6db4b.png">
+</p>
 
 # Env
 `conda install pytorch==2.0.0 torchvision==0.15.1 pytorch-cuda=11.8 -c pytorch -c nvidia`
