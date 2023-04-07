@@ -1,9 +1,18 @@
 # Motion_magnification_learning-based
-This is an unofficial implementation of "[Learning-based Video Motion Magnification](https://arxiv.org/abs/1804.02684)" in Pytorch==1.8.1.
+This is an unofficial implementation of "[Learning-based Video Motion Magnification](https://arxiv.org/abs/1804.02684)" in Pytorch (1.8.1~2.0).
 [The official implementation in Tensorflow==1.8.0](https://github.com/12dmodel/deep_motion_mag).
 
+# Update
+**(2023/04/07)I find there are still a few friends like you have interests in this old repo, so I make a Colab demo for the easy inference if you want. And I'm sorry for my stupid codes years ago, I felt painful when I used them for the Colab demo... And you know, some still exists😂**
+**Besides, as tested, this repo can be run with PyTorch 2.0**
+
+*Given the video, and amplify it with only one click for all steps:*
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1inOucehJXUAVBlRhZvo650SoOPLKQFNv#scrollTo=BjgKRohk7Q5M)
+
+
 # Env
-`conda install pytorch torchvision cudatoolkit=10.2 -c pytorch`
+`conda install pytorch==2.0.0 torchvision==0.15.1 pytorch-cuda=11.8 -c pytorch -c nvidia`
 
 `pip install -r requirements.txt`
 

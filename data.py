@@ -83,6 +83,11 @@ def get_paths_ABC(config, mode):
     else:
         val_vid = mode.split('_')[-1]
         dir_root = eval('config.dir_{}'.format(val_vid))
+        if not os.path.exists(dir_root):
+            dir_root = os.path.join(config.data_dir, val_vid)
+        if not os.path.exists(dir_root):
+            print('Cannot find data at {}.\nExiting the program...'.format(dir_root))
+            exit()
     paths_A, paths_C, paths_skip_intermediate, paths_skip, paths_mag = [], [], [], [], []
     if config.cursor_end > 0 or 'test' in mode:
         dir_A = os.path.join(dir_root, 'frameA')

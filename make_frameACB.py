@@ -7,15 +7,15 @@ import sys
 
 
 # Choose the dir you want
-dirs = sorted([i for i in os.listdir('.') if i[:5] in 
-['glass']
+dirs = sorted([i for i in os.listdir('.') if i in 
+sys.argv[1].split('+')
 # and int(i.split('_')[-1].split('.')[0]) > 0
 ]
 # , key=lambda x: int(x.split('_')[-1])
 )[:]
 
 for d in dirs:
-    print(d)
+    print('ACB-Processing on', d)
     os.chdir(d)
     os.mkdir('frameA')
     os.mkdir('frameC') 

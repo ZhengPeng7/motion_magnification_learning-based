@@ -25,7 +25,11 @@ class Config(object):
         self.dir_myself = os.path.join(self.data_dir, 'train/train_vid_frames/myself')
         self.frames_train = 'coco100000'        # you can adapt 100000 to a smaller number to train
         self.cursor_end = int(self.frames_train.split('coco')[-1])
-        self.coco_amp_lst = np.loadtxt(os.path.join(self.dir_train, 'train_mf.txt'))[:self.cursor_end]
+        if os.path.exists(os.path.join(self.dir_train, 'train_mf.txt')):
+          self.coco_amp_lst = np.loadtxt(os.path.join(self.dir_train, 'train_mf.txt'))[:self.cursor_end]
+        else:
+          print('Please load train_mf.txt if you want to do training.')
+          self.coco_amp_lst = None
         self.videos_train = []
         self.load_all = False        # Don't turn it on, unless you have such a big mem.
                                      # On coco dataset, 100, 000 sets -> 850G
