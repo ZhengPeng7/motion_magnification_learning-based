@@ -82,8 +82,11 @@ def get_paths_ABC(config, mode):
         dir_root = config.dir_test
     else:
         val_vid = mode.split('_')[-1]
-        dir_root = eval('config.dir_{}'.format(val_vid))
-        if not os.path.exists(dir_root):
+        try:
+            dir_root = eval('config.dir_{}'.format(val_vid))
+            if not os.path.exists(dir_root):
+                dir_root = os.path.join(config.data_dir, val_vid)
+        except:
             dir_root = os.path.join(config.data_dir, val_vid)
         if not os.path.exists(dir_root):
             print('Cannot find data at {}.\nExiting the program...'.format(dir_root))
