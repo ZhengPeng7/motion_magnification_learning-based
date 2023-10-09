@@ -1,10 +1,11 @@
 # Motion_magnification_learning-based
 This is an unofficial implementation of "[Learning-based Video Motion Magnification](https://arxiv.org/abs/1804.02684)" in Pytorch (1.8.1~2.0).
-[The official implementation in Tensorflow==1.8.0](https://github.com/12dmodel/deep_motion_mag).
+[Here is the official implementation in Tensorflow==1.8.0](https://github.com/12dmodel/deep_motion_mag).
 
 # Update
-**(2023/04/07)I find there are still a few friends like you have interests in this old repo, so I make a Colab demo for the easy inference if you want. And I'm sorry for my stupid codes years ago, I felt painful when I used them for the Colab demo... And you know, some still exists😂**
-**Besides, as tested, this repo can be run with PyTorch 2.0**
+**(2023/04/07)I find there are still a few friends like you who have interests in this old repo, so I make a Colab demo for easy inference if you want. And I'm sorry for my stupid codes years ago, I felt painful when I used them for the Colab demo... And you know, some still exist 😂 But if you have any trouble with it, feel free to leave an issue or send an e-mail to me.**
+
+Besides, as tested, this repo can be run with **PyTorch 2.0**
 
 *Given the video, and amplify it with only one click for all steps:*
 
