@@ -3,7 +3,8 @@ This is an unofficial implementation of "[Learning-based Video Motion Magnificat
 [Here is the official implementation in Tensorflow==1.8.0](https://github.com/12dmodel/deep_motion_mag).
 
 # Update
-**(2023/04/07)I find there are still a few friends like you who have interests in this old repo, so I make a Colab demo for easy inference if you want. And I'm sorry for my stupid codes years ago, I felt painful when I used them for the Colab demo... And you know, some still exist 😂 But if you have any trouble with it, feel free to leave an issue or send an e-mail to me.**
+**(2023/11/05) Add notebook demo for offline inference. Feel free to email me or leave issues if you want any help I can do.**
+**(2023/04/07) I find there are still a few friends like you who have interests in this old repo, so I make a Colab demo for easy inference if you want. And I'm sorry for my stupid codes years ago, I felt painful when I used them for the Colab demo... And you know, some still exist 😂 But if you have any trouble with it, feel free to leave an issue or send an e-mail to me.**
 
 Besides, as tested, this repo can be run with **PyTorch 2.0**
 
