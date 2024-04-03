@@ -2,9 +2,9 @@
 This is an unofficial implementation of "[Learning-based Video Motion Magnification](https://arxiv.org/abs/1804.02684)" in Pytorch (1.8.1~2.0).
 [Here is the official implementation in Tensorflow==1.8.0](https://github.com/12dmodel/deep_motion_mag).
 
-# High recommendations on my friends' latest works, come and try them!
-+ **<ins>Event-Based</ins> Motion Magnification**: [[paper](https://arxiv.org/pdf/2402.11957.pdf)] [[codes](https://github.com/OpenImagingLab/emm)] [[proj](https://openimaginglab.github.io/emm/)]
-+ **<ins>Frequency Decoupling</ins> for Motion Magnification via Multi-Level Isomorphic Architecture**: [[paper](https://arxiv.org/pdf/2403.07347.pdf)] [[codes](https://github.com/Jiafei127/FD4MM)]
+#### High recommendations on my friends' latest works, come and try them!
++ <ins>Event-Based</ins> Motion Magnification: [[paper](https://arxiv.org/pdf/2402.11957.pdf)] [[codes](https://github.com/OpenImagingLab/emm)] [[project](https://openimaginglab.github.io/emm/)]
++ <ins>Frequency Decoupling</ins> for Motion Magnification via Multi-Level Isomorphic Architecture: [[paper](https://arxiv.org/pdf/2403.07347.pdf)] [[codes](https://github.com/Jiafei127/FD4MM)]
 
 # Update
 **(2023/11/05) Add notebook demo for offline inference. Feel free to email me or leave issues if you want any help I can do.**
