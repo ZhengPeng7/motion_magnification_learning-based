@@ -24,15 +24,18 @@ def gen_poisson_noise(unit):
     return poisson_noise
 
 
-def load_unit(path):
+def load_unit(path, inf_size=(0, 0)):
     # Load
-    file_suffix = path.split('.')[-1].lower()
-    if file_suffix in ['jpg', 'png']:
+    file_suffix = os.path.splitext(path)[1].lower()
+    if file_suffix in ['.jpg', '.png']:
         try:
-            unit = cv2.cvtColor(imread(path).astype(np.uint8), cv2.COLOR_RGB2BGR)
+            image = imread(path).astype(np.uint8)
         except Exception as e:
             print('{} load exception:\n'.format(path), e)
-            unit = cv2.cvtColor(np.array(Image.open(path).convert('RGB')), cv2.COLOR_RGB2BGR)
+            image = np.array(Image.open(path).convert('RGB'))
+        if inf_size != (0, 0):
+            image = cv2.resize(image, inf_size, interpolation=cv2.INTER_LANCZOS4)
+        unit = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         return unit
     else:
         print('Unsupported file type.')
@@ -194,15 +197,15 @@ class DataGen():
         batch_amp = numpy2cuda(batch_amp).reshape(self.batch_size, 1, 1, 1)
         return batch_A, batch_B, batch_C, batch_M, batch_amp
 
-    def gen_test(self, anchor=None):
+    def gen_test(self, anchor=None, inf_size=(0, 0)):
         batch_A = []
         batch_C = []
         if anchor is None:
             anchor = self.anchor
 
         for _ in range(self.batch_size):
-            unit_A = load_unit(self.paths[anchor])
-            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'))
+            unit_A = load_unit(self.paths[anchor], inf_size=inf_size)
+            unit_C = load_unit(self.paths[anchor].replace('frameA', 'frameC'), inf_size=inf_size)
             unit_A = unit_preprocessing(unit_A, preproc=[], is_test=True)
             unit_C = unit_preprocessing(unit_C, preproc=[], is_test=True)
             batch_A.append(unit_A)
