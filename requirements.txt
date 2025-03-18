@@ -1,3 +1,6 @@
+torch==2.5.1
+torchvision
 opencv-python
 scikit-image
 scikit-learn
+ipykernel

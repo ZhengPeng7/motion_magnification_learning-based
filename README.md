@@ -11,7 +11,7 @@ This is an unofficial implementation of "[Learning-based Video Motion Magnificat
 
 **(2023/04/07) I find there are still a few friends like you who have interests in this old repo, so I make a Colab demo for easy inference if you want. And I'm sorry for my stupid codes years ago, I felt painful when I used them for the Colab demo... And you know, some still exist 😂 But if you have any trouble with it, feel free to leave an issue or send an e-mail to me.**
 
-Besides, as tested, this repo can be run with **PyTorch 2.0**
+Besides, as tested, this repo can be compatible with **PyTorch 2.x**
 
 *Given the video, and amplify it with only one click for all steps:*
 
@@ -22,9 +22,10 @@ Besides, as tested, this repo can be run with **PyTorch 2.0**
 </p>
 
 # Env
-`conda install pytorch==2.0.0 torchvision==0.15.1 pytorch-cuda=11.8 -c pytorch -c nvidia`
-
-`pip install -r requirements.txt`
+```
+conda create -n vmm python=3.10 -y && conda activate vmm
+pip install -r requirements.txt
+```
 
 # Data preparation
 
