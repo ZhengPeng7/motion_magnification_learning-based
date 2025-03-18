@@ -14,20 +14,21 @@ sys.argv[1].split('+')
 # , key=lambda x: int(x.split('_')[-1])
 )[:]
 
+image_format_name='png'
+
 for d in dirs:
     print('ACB-Processing on', d)
     os.chdir(d)
     os.mkdir('frameA')
-    os.mkdir('frameC') 
-    files = sorted([f for f in os.listdir('.') if f[-4:] == '.png'], key=lambda x: int(x.split('.')[0]))
-    os.system('cp ./*png frameA && cp ./*png frameC') 
-    os.remove(os.path.join('frameA', files[-1])) 
-    os.remove(os.path.join('frameC', files[0])) 
+    os.mkdir('frameC')
+    files = sorted([f for f in os.listdir('.') if os.path.splitext(f)[1] == '.{}'.format(image_format_name)], key=lambda x: int(x.split('.')[0]))
+    os.system('cp ./*{} frameA && cp ./*{} frameC'.format(image_format_name, image_format_name))
+    os.remove(os.path.join('frameA', files[-1]))
+    os.remove(os.path.join('frameC', files[0]))
     for f in sorted(os.listdir('frameC'), key=lambda x: int(x.split('.')[0])): 
-        f_new = os.path.join('frameC', '%06d' % (int(f.split('.')[0])-1) + '.png') 
-        f = os.path.join('frameC', f) 
-        os.rename(f, f_new) 
-    os.system('cp -r frameC frameB') 
-    os.system('rm ./*.png')
+        f_new = os.path.join('frameC', '%06d' % (int(f.split('.')[0])-1) + '.{}'.format(image_format_name))
+        f = os.path.join('frameC', f)
+        os.rename(f, f_new)
+    os.system('cp -r frameC frameB')
+    os.system('rm ./*.{}'.format(image_format_name))
     os.chdir('..')
-
