@@ -81,7 +81,7 @@ def get_paths_ABC(config, mode):
     elif mode == 'test_on_testset':
         dir_root = config.dir_test
     else:
-        val_vid = mode.split('_')[-1]
+        val_vid = '_'.join(mode.split('_')[2:])
         try:
             dir_root = eval('config.dir_{}'.format(val_vid))
             if not os.path.exists(dir_root):
