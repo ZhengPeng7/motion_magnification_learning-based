@@ -29,9 +29,9 @@ pip install -r requirements.txt
 
 # Data preparation
 
-0. About the synthetic dataset for **training**, please refer to the official repository mentioned above or download [here](https://drive.google.com/drive/folders/19K09QLouiV5N84wZiTPUMdoH9-UYqZrX?usp=sharing).
+0. About the synthetic dataset for **training**, please refer to the official repository mentioned above or download [here](https://huggingface.co/datasets/ZhengPeng7/vid_motion_mag_eccv18).
 
-1. About the video datasets for **validation**, you can also download the preprocessed frames [here](https://drive.google.com/drive/folders/19K09QLouiV5N84wZiTPUMdoH9-UYqZrX?usp=sharing), which is named train_vid_frames.zip.
+1. About the video datasets for **validation**, you can also download the preprocessed frames [here](https://huggingface.co/datasets/ZhengPeng7/vid_motion_mag_eccv18), which is named train_vid_frames.zip.
 
 2. Check the settings of val_dir in **config.py** and modify it if necessary.
 
